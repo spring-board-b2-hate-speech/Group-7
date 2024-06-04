@@ -1,0 +1,71 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Load the TSV files
+train_file_path = r'F:\moVies\Springboard\data\ghc_train.tsv'
+test_file_path = r'F:\moVies\Springboard\data\ghc_test.tsv'
+
+train_df = pd.read_csv(train_file_path, sep='\t')
+test_df = pd.read_csv(test_file_path, sep='\t')
+
+# Display the first few rows of the data
+print("Train DataFrame Head:")
+display(train_df.head())
+print("Test DataFrame Head:")
+display(test_df.head())
+
+# Inspect the data
+print("Train DataFrame Info:")
+train_df.info()
+print("Train DataFrame Description:")
+display(train_df.describe())
+
+print("Test DataFrame Info:")
+test_df.info()
+print("Test DataFrame Description:")
+display(test_df.describe())
+
+# Handle missing values
+train_df.dropna(inplace=True)
+test_df.dropna(inplace=True)
+# Or fill missing values (example: fill with mean for numerical columns)
+# train_df.fillna(train_df.mean(), inplace=True)
+# test_df.fillna(test_df.mean(), inplace=True)
+
+# Remove duplicates
+train_df.drop_duplicates(inplace=True)
+test_df.drop_duplicates(inplace=True)
+
+# Convert data types if necessary
+# train_df['date_column'] = pd.to_datetime(train_df['date_column'])
+# test_df['date_column'] = pd.to_datetime(test_df['date_column'])
+
+# Normalize/Standardize data if necessary
+numerical_columns = ['hd', 'cv', 'vo']  # Replace with actual numerical column names
+scaler = StandardScaler()
+train_df[numerical_columns] = scaler.fit_transform(train_df[numerical_columns])
+test_df[numerical_columns] = scaler.transform(test_df[numerical_columns])
+
+# Handle outliers (example for one numerical column)
+numerical_column = 'hd'  # Replace with actual numerical column name
+Q1 = train_df[numerical_column].quantile(0.25)
+Q3 = train_df[numerical_column].quantile(0.75)
+IQR = Q3 - Q1
+train_df = train_df[~((train_df[numerical_column] < (Q1 - 1.5 * IQR)) | (train_df[numerical_column] > (Q3 + 1.5 * IQR)))]
+
+Q1_test = test_df[numerical_column].quantile(0.25)
+Q3_test = test_df[numerical_column].quantile(0.75)
+IQR_test = Q3_test - Q1_test
+test_df = test_df[~((test_df[numerical_column] < (Q1_test - 1.5 * IQR_test)) | (test_df[numerical_column] > (Q3_test + 1.5 * IQR_test)))]
+
+# Encode categorical data
+categorical_columns = ['text']  # Replace with actual categorical column names
+train_df = pd.get_dummies(train_df, columns=categorical_columns)
+test_df = pd.get_dummies(test_df, columns=categorical_columns)
+
+# Ensure train and test dataframes have the same columns after one-hot encoding
+train_df, test_df = train_df.align(test_df, join='inner', axis=1)
+
+# Save cleaned data
+train_df.to_csv('cleaned_train.tsv', sep='\t', index=False)
+test_df.to_csv('cleaned_test.tsv', sep='\t', index=False)
