@@ -1,0 +1,15 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Load the TSV files
+train_file_path = r'F:\moVies\Springboard\data\ghc_train.tsv'
+test_file_path = r'F:\moVies\Springboard\data\ghc_test.tsv'
+
+train_df = pd.read_csv(train_file_path, sep='\t')
+test_df = pd.read_csv(test_file_path, sep='\t')
+
+# Display the first few rows of the data
+print("Train DataFrame Head:")
+display(train_df.head())
+print("Test DataFrame Head:")
+display(test_df.head())
