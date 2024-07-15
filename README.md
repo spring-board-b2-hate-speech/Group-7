@@ -7,6 +7,15 @@ The sheer volume and speed of content generation necessitate a more efficient so
 detecting and mitigating hate speech. Successfully managing hate speech can create a safer
 environment for users, fostering positive interactions and reducing harm.
 
-Dataset url:https://osf.io/edua3/
+# Gab Hate Corpus Dataset
+Original Dataset url: https://osf.io/edua3/
+
+The Gab Hate Corpus (GHC) dataset, consisting of 22,037 rows with 4 columns labelled as 
+Text, CV (a Call for Violence ), HD (an Assault on Human Dignity ), 
+VO (Vulgarity/Offensive Language directed at an individual).
+
+Preprocessed Dataset: https://drive.google.com/file/d/16EJQXJQWr7nmmONQ8UkPtmwNdpHx42yC/view?usp=sharing
+After preprocessing all the duplicate data is removed and the data can be analyzed more efficiently.
+
 
 
